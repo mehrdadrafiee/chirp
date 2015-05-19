@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
+var mongoose = require( 'mongoose' );
 var Post = mongoose.model('Post');
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
@@ -29,7 +29,7 @@ router.route('/posts')
 
 		var post = new Post();
 		post.text = req.body.text;
-		post.username = req.body.created_by;
+		post.created_by = req.body.created_by;
 		post.save(function (err, post) {
 			if (err){
 				return res.send(500, err);
@@ -60,12 +60,12 @@ router.route('/posts/:id')
 		});
 	}) 
 	//updates specified post
-	.put(function (req, res){
+	.put(function(req, res){
 		Post.findById(req.params.id, function (err, post){
 			if(err)
 				res.send(err);
 
-			post.username = req.body.created_by;
+			post.created_by = req.body.created_by;
 			post.text = req.body.text;
 
 			post.save(function (err, post){
@@ -80,7 +80,7 @@ router.route('/posts/:id')
 	.delete(function (req, res) {
 		Post.remove({
 			_id: req.params.id
-		}, function(err) {
+		}, function (err) {
 			if (err)
 				res.send(err);
 			res.json("deleted :(");
